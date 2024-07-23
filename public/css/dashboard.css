@@ -1,0 +1,27 @@
+.add-new {
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+    color: white;
+    margin: 20px;
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+.add-new i {
+    margin-right: 4px;
+}
+
+.btnOpcoes button {
+    margin-right: 5px;
+    margin-bottom: 7px;
+}
+
+.btn-custom {
+    width: 120px;
+    height: auto;
+}
