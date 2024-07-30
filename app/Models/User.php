@@ -24,7 +24,6 @@ class User extends Authenticatable
     protected $fillable = [
         'matricula',
         'nome_completo',
-        'tipo_vinculo',
         'nome_curso',
     ];
 

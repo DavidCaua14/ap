@@ -14,40 +14,40 @@ class LoginController extends Controller
 {
     const API_SUAP = 'https://suap.ifrn.edu.br/api/v2';
 
-    // Função para mostrar o formulário de login
+    // Exibe o formulário de login
     public function mostrarFormularioDeLogin()
     {
         return view('auth.login');
     }
 
-    // Função para autenticar o usuário
+    // Realiza a autenticação do usuário
     public function autenticar(Request $request)
     {
         try {
-            // Validando o Request
-            $this->validarRequest($request);
+            // Valida os dados do request
+            $this->validarDados($request);
 
-            // Autenticando com SUAP
-            $token = $this->autenticarComSuap($request->email, $request->password);
+            // Obtém o token do SUAP
+            $token = $this->obterTokenSuap($request->email, $request->password);
 
-            // Resgatando Dados do SUAP
-            $dadosUsuario = $this->buscarDadosDoUsuario($token);
+            // Busca os dados do usuário no SUAP
+            $dadosUsuario = $this->buscarDadosDoUsuarioNoSuap($token);
 
-            // Verifico se o usuário já existe ou cria um novo
+            // Encontra ou cria o usuário no banco de dados
             $usuario = $this->encontrarOuCriarUsuario($dadosUsuario);
 
-            // Iniciando sessão
+            // Realiza o login do usuário
             $this->logarUsuario($request, $usuario);
 
-            // Redirecionando para a página inicial
+            // Redireciona para a página inicial
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (Exception $e) {
             return back()->withErrors(['message' => $e->getMessage()]);
         }
     }
 
-    // Função para validar os dados do Request
-    private function validarRequest(Request $request)
+    // Valida os dados do request
+    private function validarDados(Request $request)
     {
         $request->validate([
             'email' => 'required|string',
@@ -55,8 +55,8 @@ class LoginController extends Controller
         ]);
     }
 
-    // Função para autenticar no SUAP e obter o token
-    private function autenticarComSuap($email, $password)
+    // Autentica no SUAP e obtém o token
+    private function obterTokenSuap($email, $password)
     {
         $response = Http::post(self::API_SUAP . '/autenticacao/token/', [
             'username' => $email,
@@ -70,8 +70,8 @@ class LoginController extends Controller
         return $response['access'];
     }
 
-    // Função para buscar os dados do usuário no SUAP
-    private function buscarDadosDoUsuario($token)
+    // Busca os dados do usuário no SUAP
+    private function buscarDadosDoUsuarioNoSuap($token)
     {
         $response = Http::withToken($token)->get(self::API_SUAP . '/minhas-informacoes/meus-dados/');
 
@@ -82,27 +82,23 @@ class LoginController extends Controller
         return $response->json();
     }
 
-    // Função para encontrar ou criar um usuário no banco de dados
+    // Encontra ou cria um usuário no banco de dados
     private function encontrarOuCriarUsuario($dadosUsuario)
     {
         // Tenta encontrar um usuário existente
-        $usuario = User::where('matricula', $dadosUsuario['matricula'])->first();
-
-        // Se não encontrar, cria um novo usuário
-        if (!$usuario) {
-            $usuario = User::create([
-                'matricula' => $dadosUsuario['matricula'],
+        $usuario = User::firstOrCreate(
+            ['matricula' => $dadosUsuario['matricula']],
+            [
                 'nome_completo' => $dadosUsuario['nome'] ?? $dadosUsuario['vinculo']['nome'],
-                'tipo_vinculo' => $dadosUsuario['tipo_vinculo'],
                 'nome_curso' => $dadosUsuario['vinculo']['curso'],
-            ]);
-        }
+            ]
+        );
 
         // Retorna o usuário, seja ele existente ou recém-criado
         return $usuario;
     }
 
-    // Função para logar o usuário
+    // Realiza o login do usuário
     private function logarUsuario(Request $request, $usuario)
     {
         // Faz login do usuário
@@ -112,8 +108,8 @@ class LoginController extends Controller
         $request->session()->regenerate();
     }
 
-    // Função para logout
-    public function destruir(Request $request)
+    // Realiza o logout do usuário
+    public function deslogar(Request $request)
     {
         // Faz logout do usuário
         Auth::logout();

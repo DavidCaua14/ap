@@ -32,5 +32,5 @@ Route::middleware('auth')->group(function () {
         return view('home');
     })->name('home'); 
     
-    Route::post('logout', [LoginController::class, 'destruir'])->name('logout');
+    Route::post('logout', [LoginController::class, 'deslogar'])->name('logout');
 });

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->string('matricula')->primary();
             $table->string('nome_completo');
-            $table->string('tipo_vinculo');
             $table->string('nome_curso')->nullable(true);
             $table->timestamps();
         });
