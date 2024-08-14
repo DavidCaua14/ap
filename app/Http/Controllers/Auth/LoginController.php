@@ -15,9 +15,14 @@ class LoginController extends Controller
     const API_SUAP = 'https://suap.ifrn.edu.br/api/v2';
 
     // Exibe o formulário de login
-    public function mostrarFormularioDeLogin()
+    public function index()
     {
         return view('auth.login');
+    }
+
+    public function indexHome()
+    {
+        return view('home');
     }
 
     // Realiza a autenticação do usuário

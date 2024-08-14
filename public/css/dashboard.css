@@ -16,9 +16,9 @@
     margin-right: 4px;
 }
 
-.btnOpcoes button {
+.btnOpcoes button a {
     margin-right: 5px;
-    margin-bottom: 7px;
+    margin-bottom: 10px;
 }
 
 .btn-custom {

@@ -12,8 +12,8 @@
 <body>
   <nav class="navbar navbar-expand-md navbar-light fixed-top py-4">
     <div class="container">
-        <a href="#" class="navbar-brand">
-            <img src="./imagens/perfil.jpeg" alt="Logo AP" class="rounded-circle" width="60" height="60">
+        <a href="{{ route('home') }}" class="navbar-brand">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo AP" class="rounded-circle" width="60" height="60">
         </a>
         <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Pesquisar objeto" aria-label="Search">
@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                 <li class="nav-item">
-                  <a href="dashboard.html" class="nav-link">Dashboard</a>
+                  <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,22 +53,35 @@
                 </div>
               </div>
 
-
-                <div class="card bg-success mt-4">
-                  <img src="./imagens/garrafinha.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <div class="text-section">
-                      <h5 class="card-title text-white">Aguardando Retirada</h5>
-                      <p class="card-text text-white">Garrafinha de água, encontrada no banheiro de química</p>
-                    </div>
-                    <div class="cta-section text-white">
-                      <div>01/03/2024</div>
-                      <div>16:17</div>
-                    </div>
-                  </div>
-                </div>
-
-
+              @if($objetos->isEmpty())
+              <div class="alert alert-warning mt-4">
+                  Não existe objeto cadastrado.
+              </div>
+              @else
+                  @foreach($objetos as $objeto)
+                      <div class="card bg-success mt-4">
+                          @if($objeto->imagem)
+                              <img src="{{ asset('storage/' . $objeto->imagem) }}" class="card-img-top" alt="Imagem do Objeto">
+                          @endif
+                          <div class="card-body">
+                              <div class="text-section">
+                                  <h5 class="card-title text-white">
+                                      @if($objeto->status == 0)
+                                         Situação: Aguardando Retirada
+                                      @else
+                                         Situação: Entregue
+                                      @endif
+                                  </h5>
+                                  <p class="card-text text-white">{{ $objeto->descricao }}</p>
+                              </div>
+                              <div class="cta-section text-white">
+                                  <div>{{ $objeto->data_encontrada }}</div>
+                                  <div>{{ $objeto->hora_encontrada }}</div>
+                              </div>
+                          </div>
+                      </div>
+                  @endforeach
+              @endif          
 
 
             </div>
