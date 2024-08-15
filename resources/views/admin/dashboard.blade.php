@@ -44,7 +44,17 @@
     </nav>
 
     <main>
+        <br>
+        <br>
+        <div class="container">
+            @if(session('success'))
+                <p class="alert alert-success my-3 mb-0 text-center">{{ session('success') }}</p>
+            @endif
 
+            @if(session('error'))
+                <p class="alert alert-danger my-3 text-center">{{ session('error') }}</p>
+            @endif
+        </div>
         <!-- Modal de Confirmação -->
         <div class="modal fade" id="confirmEntregaModal" tabindex="-1" aria-labelledby="confirmEntregaModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -69,7 +79,7 @@
         <a href="{{ route('objeto.create') }}">
             <button type="button" class="btn bg-success add-new"><i class="fa fa-plus"></i> Adicionar Objeto</button>
         </a>
-
+        @forelse($objetos as $objeto)
         <table class="table table-striped containerTable">
             <thead>
                 <tr>
@@ -80,7 +90,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($objetos as $objeto)
+                
                     <tr>
                         <td>{{ $objeto->descricao }}</td>
                         <td>
@@ -131,14 +141,15 @@
                             </div>
                         </td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="4">Nenhum objeto cadastrado.</td>
-                    </tr>
-                @endforelse
             </tbody>
         </table>
-        
+        @empty
+        <div class="container">
+            <div class="alert alert-warning mt-4 text-center">
+                Não existe objeto cadastrado.
+            </div>
+        </div>
+        @endforelse
     </main>
 
     <script>

@@ -35,7 +35,7 @@ main{
     margin-bottom: 20px;
 }
 
-#email, #password {
+#matricula, #password {
     width: 275px;
     height: 41.3px;
     border-color: black;
@@ -91,4 +91,21 @@ main{
         width: 90%;
         height: auto;
     }
+}
+
+.is-invalid {
+    border-color: red;
+    background-color: #fdd;
+}
+
+.invalid-feedback {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    display: block;
+    text-align: center;
+}
+
+.error-message{
+    color: red;
 }

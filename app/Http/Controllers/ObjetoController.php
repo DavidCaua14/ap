@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FormStoreRequest;
 use App\Models\Objeto;
 use Illuminate\Http\Request;
 
@@ -25,11 +26,12 @@ class ObjetoController extends Controller
         return view('admin.form');
     }
 
-    public function store(Request $request)
+    public function store(FormStoreRequest $request)
     {
+        $request->validated();
         $data = $this->armazenaImagem($request);
         Objeto::create($data);
-        return redirect()->route('dashboard')->with('success', 'Objeto publicado!');
+        return redirect()->route('dashboard')->with('success', 'Objeto publicado com sucesso!');
     }
     
 
@@ -44,29 +46,31 @@ class ObjetoController extends Controller
     }
     public function edit($id)
     {
-        $objeto = Objeto::findOrFail($id); // Busca o objeto para edição
-        return view('admin.form', compact('objeto')); // Passa o objeto para a view
+        $objeto = Objeto::findOrFail($id);
+        return view('admin.form', compact('objeto'));
     }
 
-    public function update(Request $request, $id)
+    public function update(FormStoreRequest $request, $id)
     {
         $objeto = Objeto::findOrFail($id);
+        $request->validated(); 
         $data = $this->armazenaImagem($request);
         $objeto->update($data);
         
         return redirect()->route('dashboard')->with('success', 'Objeto atualizado com sucesso!');
-    }    
+    } 
 
     public function entregar(Request $request, $id)
     {
         $objeto = Objeto::findOrFail($id);
-        $objeto->status = 1; // Definindo o status como "Entregue"
+        $objeto->status = 1;
         $objeto->save();
-    
-        return response()->json(['success' => true]);
     }    
 
-    public function destroy(){
-        dd("apagar");
+    public function destroy($id)
+    {
+        $objeto = Objeto::findOrFail($id);
+        $objeto->delete();
+        return redirect()->route('dashboard')->with('success', 'Objeto excluido com sucesso.');
     }
 }

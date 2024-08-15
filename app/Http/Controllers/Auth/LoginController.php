@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -26,14 +27,14 @@ class LoginController extends Controller
     }
 
     // Realiza a autenticação do usuário
-    public function autenticar(Request $request)
+    public function autenticar(LoginRequest $request)
     {
         try {
-            // Valida os dados do request
-            $this->validarDados($request);
+            // Validando as informações
+            $request->validated();
 
             // Obtém o token do SUAP
-            $token = $this->obterTokenSuap($request->email, $request->password);
+            $token = $this->obterTokenSuap($request->matricula, $request->password);
 
             // Busca os dados do usuário no SUAP
             $dadosUsuario = $this->buscarDadosDoUsuarioNoSuap($token);
@@ -47,24 +48,15 @@ class LoginController extends Controller
             // Redireciona para a página inicial
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (Exception $e) {
-            return back()->withErrors(['message' => $e->getMessage()]);
+            return back()->with('msg', $e->getMessage());
         }
     }
 
-    // Valida os dados do request
-    private function validarDados(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string',
-        ]);
-    }
-
     // Autentica no SUAP e obtém o token
-    private function obterTokenSuap($email, $password)
+    private function obterTokenSuap($matricula, $password)
     {
         $response = Http::post(self::API_SUAP . '/autenticacao/token/', [
-            'username' => $email,
+            'username' => $matricula,
             'password' => $password,
         ]);
 
@@ -104,7 +96,7 @@ class LoginController extends Controller
     }
 
     // Realiza o login do usuário
-    private function logarUsuario(Request $request, $usuario)
+    private function logarUsuario(LoginRequest $request, $usuario)
     {
         // Faz login do usuário
         Auth::login($usuario);

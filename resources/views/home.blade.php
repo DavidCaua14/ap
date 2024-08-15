@@ -54,9 +54,11 @@
               </div>
 
               @if($objetos->isEmpty())
-              <div class="alert alert-warning mt-4">
-                  Não existe objeto cadastrado.
-              </div>
+                <div class="container">
+                    <div class="alert alert-warning mt-4 text-center">
+                        Não existe objeto cadastrado.
+                    </div>
+                </div>
               @else
                   @foreach($objetos as $objeto)
                       <div class="card bg-success mt-4">

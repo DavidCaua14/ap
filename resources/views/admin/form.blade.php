@@ -43,8 +43,14 @@
             </div>
         </div>
     </nav>
-
     <main>
+        <br>
+        <br>
+        @if($errors->any())
+        <div class="container">
+            <p class="alert alert-danger my-3 text-center">Verifique os campos do formulário!</p>
+        </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card mx-3 mt-5 mb-4">
@@ -61,7 +67,12 @@
                             <div class="row mb-3">
                                 <label for="imagem" class="col-md-4 col-form-label text-md-end">Imagem</label>
                                 <div class="col-md-6">
-                                    <input id="imagem" type="file" class="form-control" name="imagem">
+                                    <input id="imagem" type="file" class="form-control @error('imagem') is-invalid @enderror" name="imagem">
+                                    @error('imagem')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                     @if(isset($objeto->imagem))
                                         <img src="{{ asset('storage/' . $objeto->imagem) }}" alt="Imagem do Objeto" class="img-fluid mt-2">
                                     @endif
@@ -71,21 +82,36 @@
                             <div class="row mb-3">
                                 <label for="descricao" class="col-md-4 col-form-label text-md-end">Descrição</label>
                                 <div class="col-md-6">
-                                    <textarea id="descricao" class="form-control" name="descricao">{{ old('descricao', isset($objeto) ? $objeto->descricao : '') }}</textarea>
+                                    <textarea id="descricao" class="form-control @error('descricao') is-invalid @enderror" name="descricao">{{ old('descricao', isset($objeto) ? $objeto->descricao : '') }}</textarea>
+                                    @error('descricao')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
         
                             <div class="row mb-3">
                                 <label for="data" class="col-md-4 col-form-label text-md-end">Data que o Objeto foi Encontrado</label>
                                 <div class="col-md-6">
-                                    <input id="data_encontrada" type="date" class="form-control" name="data_encontrada" value="{{ old('data_encontrada', isset($objeto) ? $objeto->data_encontrada : '') }}">
+                                    <input id="data_encontrada" type="date" class="form-control @error('data_encontrada') is-invalid @enderror" name="data_encontrada" value="{{ old('data_encontrada', isset($objeto) ? $objeto->data_encontrada : '') }}">
+                                    @error('data_encontrada')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="hora" class="col-md-4 col-form-label text-md-end">Hora que o Objeto foi encontrado</label>
                                 <div class="col-md-6">
-                                    <input id="hora_encontrada" type="text" class="form-control" name="hora_encontrada" value="{{ old('hora_encontrada', isset($objeto) ? $objeto->hora_encontrada : '') }}">
+                                    <input id="hora_encontrada" type="text" class="form-control @error('hora_encontrada') is-invalid @enderror" name="hora_encontrada" value="{{ old('hora_encontrada', isset($objeto) ? $objeto->hora_encontrada : '') }}">
+                                    @error('hora_encontrada')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 

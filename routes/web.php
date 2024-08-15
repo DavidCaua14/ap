@@ -41,5 +41,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/objetos/{id}/edit', [ObjetoController::class, 'edit'])->name('objeto.edit');
     Route::put('/objetos/{id}', [ObjetoController::class, 'update'])->name('objeto.update');
     Route::post('/objeto/{id}/entregue', [ObjetoController::class, 'entregar'])->name('objeto.entregar');
-    Route::delete('/destroy-objeto', [ObjetoController::class, 'destroy'])->name('objeto.destroy');
+    Route::delete('/destroy-objeto/{id}', [ObjetoController::class, 'destroy'])->name('objeto.destroy');
 });
