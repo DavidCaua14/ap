@@ -14,9 +14,6 @@
             <a href="{{ route('home') }}" class="navbar-brand">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo AP" class="rounded-circle" width="60" height="60">
             </a>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Pesquisar objeto" aria-label="Search">
-            </form>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,9 +22,11 @@
                     <li class="nav-item">
                         <a href="{{ route('home') }}" class="nav-link">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
-                    </li>
+                    @can('admin-access')
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                        </li>
+                    @endcan
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->nome_completo }}

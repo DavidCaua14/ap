@@ -20,10 +20,22 @@ class User extends Authenticatable
      protected $primaryKey = 'matricula';
      protected $keyType = 'string';
      public $incrementing = false;
+
+    const ADMIN_LEVEL = 10;
+    const DEFAULT_LEVEL = 0;
     protected $fillable = [
         'matricula',
         'nome_completo',
+        'level'
     ];
+
+    public function isAdministrator(){
+        return $this->level == User::ADMIN_LEVEL;
+    }    
+
+    public function objetos(){
+        return $this->hasMany(Objeto::class, 'matricula', 'matricula');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

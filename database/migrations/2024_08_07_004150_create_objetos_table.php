@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("data_encontrada");
             $table->string("hora_encontrada");
             $table->integer("status")->default(0);
+            $table->string("matricula");
+            $table->foreign("matricula")->references("matricula")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
     }

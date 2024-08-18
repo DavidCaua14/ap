@@ -15,6 +15,12 @@ class Objeto extends Model
         'descricao',
         'data_encontrada',
         'hora_encontrada',
-        'status'
+        'status',
+        'matricula'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'matricula', 'matricula');
+    }
+    
 }
