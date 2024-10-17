@@ -86,8 +86,7 @@ class LoginController extends Controller
         $usuario = User::firstOrCreate(
             ['matricula' => $dadosUsuario['matricula']],
             [
-                'nome_completo' => $dadosUsuario['nome'] ?? $dadosUsuario['vinculo']['nome'],
-                'nome_curso' => $dadosUsuario['vinculo']['curso'],
+                'nome_completo' => $dadosUsuario['nome'] ?? $dadosUsuario['vinculo']['nome']
             ]
         );
 
